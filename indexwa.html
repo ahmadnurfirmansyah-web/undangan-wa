@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undangan WhatsApp</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f4f4f4;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #25D366;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1ebe5d;
+    }
+    label {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Generator Undangan WhatsApp</h2>
+
+    <label for="namaTamu">Nama Tamu:</label>
+    <input type="text" id="namaTamu" placeholder="Contoh: Budi Santoso">
+
+    <label for="nomorWA">Nomor WhatsApp:</label>
+    <input type="text" id="nomorWA" placeholder="Contoh: 6281234567890">
+
+    <input type="hidden" id="linkUndangan" value="https://satumomen.com/ika-and-yogi">
+
+    <button onclick="generatePesan()">Copy Pesan</button>
+    <h4><center>ATAU</center></h4>
+    <button onclick="kirimPesanWA()">Kirim Pesan</button>
+
+    <textarea id="pesan" rows="10" readonly placeholder="Pesan akan muncul di sini..."></textarea>
+  </div>
+
+  <script>
+    function generatePesan() {
+      const nama = document.getElementById('namaTamu').value.trim();
+      const baseLink = document.getElementById('linkUndangan').value.trim();
+
+      if (!nama) {
+        alert("Silakan isi Nama Tamu terlebih dahulu.");
+        return;
+      }
+
+      const encodedNama = encodeURIComponent(nama);
+      const fullLink = baseLink + '?to=' + encodedNama;
+
+      const template = `Kepada Yth.\nBapak/Ibu/Saudara/i\n*${nama}*\n_di tempat_\n\nTanpa mengurangi rasa hormat, perkenankan kami mengundang Bapak/Ibu/Saudara/i, untuk menghadiri acara Resepsi Pernikahan Kami\n\nInfo lebih lengkap klik link dibawah ini\n${fullLink}\n\nMerupakan suatu kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan untuk hadir dan memberikan doa restu.\n\nKami yang berbahagia\n*Keluarga Kedua Mempelai*`;
+
+      const pesan = document.getElementById('pesan');
+      pesan.value = template;
+      pesan.select();
+      document.execCommand("copy");
+      alert("Pesan berhasil disalin ke clipboard!");
+    }
+
+    function kirimPesanWA() {
+      const noWA = document.getElementById('nomorWA').value.trim();
+      const pesan = document.getElementById('pesan').value;
+
+      if (!noWA || !pesan) {
+        alert("Silakan isi Nomor WhatsApp dan klik 'Copy Pesan' terlebih dahulu.");
+        return;
+      }
+
+      const urlWA = `https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`;
+      window.open(urlWA, '_blank');
+    }
+  </script>
+</body>
+</html>
