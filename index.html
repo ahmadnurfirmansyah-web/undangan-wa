@@ -119,6 +119,12 @@
 
       const urlWA = `https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`;
       window.open(urlWA, '_blank');
+      // Reset input setelah pesan dikirim
+      document.getElementById('namaTamu').value = '';
+      document.getElementById('nomorWA').value = '';
+      document.getElementById('pesan').value = '';
+
+      showToast("Pesan berhasil dikirim. Silakan isi ulang untuk kirim ke tamu berikutnya.");
     }
 
     function showToast(message) {
@@ -127,7 +133,7 @@
       notif.classList.add('show');
       setTimeout(() => {
         notif.classList.remove('show');
-      }, 3000);
+      }, 5000);
     }
   </script>
 </body>
