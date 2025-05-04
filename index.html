@@ -38,14 +38,38 @@
     label {
       font-weight: bold;
     }
+     /* Toast Notification */
+    .toast {
+      visibility: hidden;
+      min-width: 280px;
+      background-color: #323232;
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      padding: 16px;
+      position: fixed;
+      z-index: 9999;
+      left: 50%;
+      bottom: 30px;
+      font-size: 16px;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .toast.show {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Generator Undangan WhatsApp</h2>
+    <center><h2>Generator Undangan WhatsApp</h2></center>
 
     <label for="namaTamu">Nama Tamu:</label>
     <input type="text" id="namaTamu" placeholder="Contoh: Ahmad Nur">
+    <br>
     <br>
     <label for="nomorWA">Nomor WhatsApp: (Opsional)</label>
     <input type="text" id="nomorWA" placeholder="Contoh: 6281234567890">
@@ -58,14 +82,16 @@
 
     <textarea id="pesan" rows="10" readonly placeholder="Pesan akan muncul di sini..."></textarea>
   </div>
-
+  <!-- Toast Notification -->
+  <div id="notif" class="toast">Pesan berhasil disalin ke clipboard!</div>
+  
   <script>
     function generatePesan() {
       const nama = document.getElementById('namaTamu').value.trim();
       const baseLink = document.getElementById('linkUndangan').value.trim();
 
       if (!nama) {
-        alert("Silakan isi Nama Tamu terlebih dahulu.");
+        showToast("Silakan isi Nama Tamu terlebih dahulu.");
         return;
       }
 
@@ -78,7 +104,8 @@
       pesan.value = template;
       pesan.select();
       document.execCommand("copy");
-      alert("Pesan berhasil disalin ke clipboard!");
+
+      showToast("Pesan berhasil disalin ke clipboard!");
     }
 
     function kirimPesanWA() {
@@ -86,12 +113,21 @@
       const pesan = document.getElementById('pesan').value;
 
       if (!noWA || !pesan) {
-        alert("Silakan isi Nomor WhatsApp dan klik 'Copy Pesan' terlebih dahulu.");
+        showToast("Isi Nomor WhatsApp dan buat pesan terlebih dahulu.");
         return;
       }
 
       const urlWA = `https://wa.me/${noWA}?text=${encodeURIComponent(pesan)}`;
       window.open(urlWA, '_blank');
+    }
+
+    function showToast(message) {
+      const notif = document.getElementById('notif');
+      notif.textContent = message;
+      notif.classList.add('show');
+      setTimeout(() => {
+        notif.classList.remove('show');
+      }, 3000);
     }
   </script>
 </body>
